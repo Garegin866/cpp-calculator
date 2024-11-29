@@ -16,7 +16,7 @@ bool ReadNumber(Number& result) {
 }
 
 bool RunCalculatorCycle() {
-    Number number;
+    Number number = 0;
     ReadNumber(number);
 
     std::optional<double> buffer;
@@ -24,7 +24,9 @@ bool RunCalculatorCycle() {
     while(std::cin >> token) {
         if (token == "q"s) {
             return true;
-        } else if (token == "+"s || token == "-"s || token == "*"s || token == "/"s || token == "**"s) {
+        }
+
+        if (token == "+"s || token == "-"s || token == "*"s || token == "/"s || token == "**"s) {
             if (!PerformArithmeticOperation(number, token)) {
                 break;
             }
@@ -37,8 +39,8 @@ bool RunCalculatorCycle() {
     return false;
 }
 
-bool PerformArithmeticOperation(Number& number, std::string token) {
-    Number right;
+bool PerformArithmeticOperation(Number& number, const std::string& token) {
+    Number right = 0;
     if (!ReadNumber(right)) {
         return false;
     }
@@ -60,7 +62,7 @@ bool PerformArithmeticOperation(Number& number, std::string token) {
     return true;
 }
 
-bool PerformControlOperation(Number& number, std::string token, std::optional<double>& buffer) {
+bool PerformControlOperation(Number& number, const std::string& token, std::optional<double>& buffer) {
     if (token == "c"s) {
         number = 0;
     } else if (token == "s"s) {
@@ -68,7 +70,7 @@ bool PerformControlOperation(Number& number, std::string token, std::optional<do
     } else if (token == "="s) {
         std::cout << number << std::endl;
     } else if (token == ":"s) {
-        Number right;
+        Number right = 0;
         if (!ReadNumber(right)) {
             return false;
         }

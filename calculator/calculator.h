@@ -16,8 +16,8 @@ bool RunCalculatorCycle();
 // Возвращает true, если удалось выполнить арифметическую операцию
 // и сохранить результат в number.
 // В случае ошибки возвращает false.
-bool PerformArithmeticOperation(Number& number, std::string token);
+bool PerformArithmeticOperation(Number& number, const std::string& token);
 
 // Возвращает true, если удалось выполнить управляющую операцию.
 // В случае ошибки возвращает false.
-bool PerformControlOperation(Number& number, std::string token, std::optional<double>& buffer);
+bool PerformControlOperation(Number& number, const std::string& token, std::optional<double>& buffer);
