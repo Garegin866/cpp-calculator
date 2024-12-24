@@ -1,89 +1,47 @@
 #include "calculator.h"
 
-#include <iostream>
 #include <cmath>
 
-using namespace std::literals;
-
-bool ReadNumber(Number& result) {
-    const auto err_not_num = "Error: Numeric operand expected"s;
-
-    if (!(std::cin >> result)) {
-        std::cerr << err_not_num << std::endl;
-        return false;
-    }
-    return true;
+void Calculator::Set(Number n) {
+    n_ = n;
 }
 
-bool RunCalculatorCycle() {
-    Number number = 0;
-    ReadNumber(number);
-
-    std::optional<double> buffer;
-    std::string token;
-    while(std::cin >> token) {
-        if (token == "q"s) {
-            return true;
-        }
-
-        if (token == "+"s || token == "-"s || token == "*"s || token == "/"s || token == "**"s) {
-            if (!PerformArithmeticOperation(number, token)) {
-                break;
-            }
-        } else {
-            if (!PerformControlOperation(number, token, buffer)) {
-                break;
-            }
-        }
-    }
-    return false;
+Number Calculator::GetNumber() const {
+    return n_;
 }
 
-bool PerformArithmeticOperation(Number& number, const std::string& token) {
-    Number right = 0;
-    if (!ReadNumber(right)) {
-        return false;
-    }
-
-    if (token == "+"s) {
-        number += right;
-    } else if (token == "-"s) {
-        number -= right;
-    } else if (token == "*"s) {
-        number *= right;
-    } else if (token == "/"s) {
-        number /= right;
-    } else if (token == "**"s) {
-        number = std::pow(number, right);
-    } else {
-        std::cerr << "Error: Unknown token "s << token << std::endl;
-        return false;
-    }
-    return true;
+void Calculator::Add(Number n) {
+    n_ += n;
 }
 
-bool PerformControlOperation(Number& number, const std::string& token, std::optional<double>& buffer) {
-    if (token == "c"s) {
-        number = 0;
-    } else if (token == "s"s) {
-        buffer = number;
-    } else if (token == "="s) {
-        std::cout << number << std::endl;
-    } else if (token == ":"s) {
-        Number right = 0;
-        if (!ReadNumber(right)) {
-            return false;
-        }
-        number = right;
-    } else if (token == "l"s) {
-        if (!buffer.has_value()) {
-            std::cerr << "Error: Memory is empty " << std::endl;
-            return false;
-        }
-        number = buffer.value();
-    } else {
-        std::cerr << "Error: Unknown token "s << token << std::endl;
-        return false;
-    }
-    return true;
+void Calculator::Sub(Number n) {
+    n_ -= n;
+}
+
+void Calculator::Div(Number n) {
+    n_ /= n;
+}
+
+void Calculator::Mul(Number n) {
+    n_ *= n;
+}
+
+void Calculator::Pow(Number n){
+    n_ = std::pow(n_, n);
+}
+
+void Calculator::Save() {
+    buffer_ = n_;
+}
+
+void Calculator::Load() {
+    n_ = buffer_.value();
+}
+
+bool Calculator::HasMem() const {
+    return buffer_.has_value();
+}
+
+std::string Calculator::GetNumberRepr() const {
+    return std::to_string(n_);
 }
