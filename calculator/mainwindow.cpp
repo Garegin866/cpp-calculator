@@ -117,9 +117,9 @@ void MainWindow::on_btn_ms_clicked()
 void MainWindow::on_btn_mr_clicked()
 {
     if (memory_saved_) {
-        input_number_ = QString::number(memory_cell_);
+        input_number_ = "";
         active_number_ = memory_cell_;
-        ui->l_result->setText(input_number_);
+        ui->l_result->setText(QString::number(memory_cell_));
     }
 }
 
@@ -142,6 +142,10 @@ void MainWindow::on_btn_c_clicked()
 
 void MainWindow::on_btn_plus_minus_clicked()
 {
+    if (input_number_.isEmpty() && current_operation_ == Operation::NO_OPERATION) {
+        return;
+    }
+
     active_number_ *= -1;
     input_number_ = QString::number(active_number_);
     ui->l_result->setText(input_number_);
@@ -149,7 +153,7 @@ void MainWindow::on_btn_plus_minus_clicked()
 
 void MainWindow::on_btn_del_clicked()
 {
-    if (input_number_.length() > 0) {
+    if (!input_number_.isEmpty())  {
         input_number_ = input_number_.left(input_number_.length() - 1);
         active_number_ = input_number_.toDouble();
         ui->l_result->setText(input_number_);
@@ -158,6 +162,15 @@ void MainWindow::on_btn_del_clicked()
 
 void MainWindow::on_btn_dot_clicked()
 {
+    if (input_number_.isEmpty()) {
+        if (current_operation_ != Operation::NO_OPERATION) {
+            return;
+        }
+        input_number_ = "0";
+        ui->l_result->setText(input_number_);
+        ui->l_formula->setText("");
+    }
+
     if (!input_number_.contains(kDot)) {
         input_number_ += kDot;
         ui->l_result->setText(input_number_);
